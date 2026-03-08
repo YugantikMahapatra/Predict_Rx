@@ -40,7 +40,3 @@ Project Structure
 - datasets/: Contains the CSV files used for the knowledge base.
 - models/: Contains the pre-trained Machine Learning model (svc.pkl).
 - constants.py: Contains dictionaries mapping symptoms to indices.
-
-Credits
--------
-Developed as a Minor Project for [Your College Name].
