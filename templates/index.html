@@ -193,6 +193,11 @@
         .result-header {
             text-align: center;
             margin: 50px 0 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .result-header h2 {
@@ -200,16 +205,7 @@
             color: #333;
             position: relative;
             display: inline-block;
-        }
-
-        .result-header h2::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 4px;
-            background: #00c6f9;
-            margin: 10px auto 0;
-            border-radius: 2px;
+            margin: 0;
         }
 
         .result-container {
@@ -367,9 +363,104 @@
             margin-top: 50px;
         }
 
+        /* Loading Spinner */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #0061f2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Print Button */
+        .btn-print {
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-print:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            .navbar, .form-container, .result-container, .btn-print, footer {
+                display: none !important;
+            }
+
+            /* Force all content sections to be visible */
+            #disease, #description, #precaution, #medications, #workouts, #diets {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                height: auto !important;
+                transform: none !important;
+                border: 1px solid #eee;
+                margin-bottom: 20px;
+                page-break-inside: avoid;
+                box-shadow: none;
+            }
+
+            body {
+                background-color: white;
+                color: black;
+            }
+            .result-header {
+                margin-bottom: 20px;
+            }
+            .result-header h2 {
+                color: black;
+                font-size: 24px;
+            }
+            .section-title {
+                color: black !important;
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 5px;
+            }
+            li {
+                color: black;
+            }
+        }
+
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <h4 style="color: #0061f2;">Analyzing Symptoms...</h4>
+        <p class="text-muted">Please wait while our AI processes your data.</p>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
@@ -409,7 +500,7 @@
                     <p class="text-muted" style="font-size: 1.1rem;">Identify potential health issues based on your symptoms with AI</p>
                 </div>
 
-                <form action="/predict" method="post" autocomplete="off">
+                <form action="/predict" method="post" autocomplete="off" onsubmit="showLoading()">
                     <div class="form-group mb-4 autocomplete-container">
                         <label for="symptoms" class="form-label fw-bold text-secondary"><i class="fas fa-notes-medical me-2"></i>Select Symptoms</label>
                         <input type="text" class="form-control form-control-lg" id="symptoms" name="symptoms" placeholder="Type symptoms (e.g., itching, headache...)">
@@ -441,6 +532,9 @@
             <!-- Results Section -->
             <div class="result-header">
                 <h2>AI Prediction Results</h2>
+                <button onclick="window.print()" class="btn btn-print">
+                    <i class="fas fa-print"></i> Print Report
+                </button>
             </div>
 
             <div class="result-container">
@@ -465,7 +559,7 @@
             </div>
 
             <!-- Content Sections -->
-            <div id="disease" class="content-section text-center">
+            <div id="disease" class="content-section text-center active">
                 <div class="section-title justify-content-center">Predicted Disease</div>
                 <p class="display-6 fw-bold text-danger">{{ predicted_disease }}</p>
             </div>
@@ -517,7 +611,7 @@
 </div>
 
 <footer class="text-center mt-5">
-    <p class="mb-0">&copy; 2023 Predict_Rx. All rights reserved.</p>
+    <p class="mb-0">&copy; 2026 Predict_Rx. All rights reserved.</p>
 </footer>
 
 <script>
@@ -528,6 +622,14 @@
     const transcriptionDiv = document.getElementById('transcription');
     const symptomsInput = document.getElementById('symptoms');
     const symptomsListDiv = document.getElementById('symptoms-list');
+
+    // Loading Spinner
+    function showLoading() {
+        const symptoms = symptomsInput.value;
+        if (symptoms && symptoms !== "Symptoms") {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    }
 
     // Autocomplete Functionality
     symptomsInput.addEventListener('input', function() {
