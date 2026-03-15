@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor Dashboard - Predict_Rx</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .dashboard-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .case-card {
+            border: 1px solid #eef2f6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fcfcfc;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Predict_Rx - Doctor Portal</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <span class="nav-link text-white">Dr. {{ current_user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container dashboard-container">
+        <h2 class="header-title mb-4">Pending Consultations</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% if not pending_consultations %}
+            <p class="text-muted">No pending consultations at the moment.</p>
+        {% endif %}
+
+        {% for consultation in pending_consultations %}
+            <div class="case-card">
+                <h5>Case #{{ consultation.id }} - Patient ID: {{ consultation.patient_id }}</h5>
+                <p><strong>Reported Symptoms:</strong> {{ consultation.symptoms }}</p>
+                <p><strong>AI Predicted Disease:</strong> <span class="text-danger fw-bold">{{ consultation.predicted_disease }}</span></p>
+
+                <form action="{{ url_for('approve_medication', consultation_id=consultation.id) }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Review & Edit AI Suggested Medications:</label>
+                        <textarea class="form-control" name="approved_medications" rows="3">{{ consultation.ai_medications }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Approve Medications</button>
+                </form>
+            </div>
+        {% endfor %}
+
+        <h3 class="header-title mt-5 mb-4">Recently Approved</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Symptoms</th>
+                        <th>Disease</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consultation in approved_consultations %}
+                    <tr>
+                        <td>{{ consultation.id }}</td>
+                        <td>{{ consultation.symptoms[:50] }}...</td>
+                        <td>{{ consultation.predicted_disease }}</td>
+                        <td><span class="badge bg-success">Approved</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

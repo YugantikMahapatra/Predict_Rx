@@ -4,3 +4,7 @@ pandas
 scikit-learn
 pickle-mixin
 gunicorn
+Flask-SQLAlchemy
+Flask-Login
+psycopg2-binary
+werkzeug
