@@ -9,117 +9,96 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <style>
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --accent-color: #00c6f9;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            background: linear-gradient(90deg, #0061f2 0%, #00c6f9 100%);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            padding: 15px 0;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: 0.5px;
-        }
-
-        .logo .myimg {
-            width: 45px;
-            height: 45px;
-            border: 2px solid rgba(255,255,255,0.8);
-            border-radius: 50%;
-            margin-right: 10px;
-            object-fit: cover;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            margin: 0 10px;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: white;
-            transition: width 0.3s;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, #0061f2 0%, #00c6f9 100%);
             color: white;
-            padding: 80px 0;
+            padding: 100px 0;
             text-align: center;
             margin-bottom: 50px;
             border-radius: 0 0 50px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 50%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.05);
+            transform: rotate(30deg);
+            pointer-events: none;
         }
 
         .hero-title {
             font-weight: 800;
-            font-size: 3rem;
             margin-bottom: 20px;
+            letter-spacing: -1px;
         }
 
         .hero-text {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             opacity: 0.9;
             max-width: 700px;
             margin: 0 auto;
         }
 
-        /* Content Cards */
-        .about-card {
+        .about-feature-card {
+            border-radius: 24px !important;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.03) !important;
+        }
+
+        .about-feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
+        }
+
+        .icon-wrapper {
+            transition: all 0.3s ease;
+        }
+
+        .about-feature-card:hover .icon-wrapper {
+            transform: scale(1.1);
+        }
+
+        .cta-banner {
+            background: linear-gradient(135deg, #0061f2 0%, #00c6f9 100%) !important;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cta-banner::after {
+            content: '\f481';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -50px;
+            font-size: 200px;
+            color: rgba(255,255,255,0.1);
+            pointer-events: none;
+        }
+
+        .btn-light-custom {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            transition: transform 0.3s;
-            border-left: 5px solid #0061f2;
-        }
-
-        .about-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-title {
             color: #0061f2;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            transition: all 0.3s;
         }
 
-        .card-title i {
-            background: rgba(0, 97, 242, 0.1);
-            padding: 10px;
-            border-radius: 10px;
+        .btn-light-custom:hover {
+            background: #f8f9fa;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            color: #00c6f9;
         }
     </style>
   </head>
@@ -146,6 +125,28 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/contact">Contact</a>
                     </li>
+                    <!-- Auth Links -->
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.role == 'doctor' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('doctor_dashboard') }}">Dashboard</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('my_history') }}">My History</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link text-warning fw-bold" href="{{ url_for('logout') }}">Logout ({{ current_user.username }})</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="{{ url_for('register') }}">Register</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -153,52 +154,75 @@
 
     <!-- Hero Section -->
     <div class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">About Us</h1>
-            <p class="hero-text">Welcome to Predict_Rx, where health meets technology for a brighter, healthier future.</p>
+        <div class="container position-relative" style="z-index: 2;">
+            <h1 class="hero-title display-4">Revolutionizing Healthcare with AI</h1>
+            <p class="hero-text">Welcome to Predict_Rx. Where advanced machine learning meets accessible personal healthcare for a brighter, healthier future.</p>
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="about-card">
-                    <h3 class="card-title"><i class="fas fa-eye"></i> Our Vision</h3>
-                    <p>We envision a world where access to healthcare information is not just a luxury but a fundamental right. Our journey began with a simple yet powerful idea: to empower individuals with the knowledge and tools they need to take control of their health.</p>
+    <!-- Main Content -->
+    <div class="container mb-5">
+
+        <!-- Intro Row -->
+        <div class="row mb-5 pb-4 border-bottom">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="fw-bold text-dark mb-3">Our Vision</h2>
+                <p class="text-muted fs-5">We envision a world where access to healthcare information is not just a luxury but a fundamental right. Our journey began with a simple yet powerful idea: to empower individuals with the knowledge and tools they need to take control of their health.</p>
+            </div>
+        </div>
+
+        <!-- Grid of Features -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm about-feature-card p-2">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper mb-4 rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: rgba(0, 198, 249, 0.1); color: #00c6f9;">
+                            <i class="fas fa-users fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3 text-dark">Who We Are</h4>
+                        <p class="text-muted mb-0">We are a passionate team of healthcare professionals, data scientists, and technology enthusiasts sharing a common goal: to make healthcare accessible, understandable, and highly personalized for you.</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="about-card" style="border-left-color: #00c6f9;">
-                    <h3 class="card-title" style="color: #00c6f9;"><i class="fas fa-users" style="background: rgba(0, 198, 249, 0.1);"></i> Who We Are</h3>
-                    <p>We are a passionate team of healthcare professionals, data scientists, and technology enthusiasts who share a common goal: to make healthcare accessible, understandable, and personalized for you. With years of experience in both healthcare and cutting-edge technology, we've come together to create this platform as a testament to our commitment to your well-being.</p>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm about-feature-card p-2">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper mb-4 rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: rgba(243, 147, 52, 0.1); color: #F39334;">
+                            <i class="fas fa-bullseye fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3 text-dark">Our Mission</h4>
+                        <p class="text-muted mb-0">To provide a seamless, intuitive platform leveraging AI and Machine Learning. We assist in identifying potential health concerns based on reported symptoms, while offering a wealth of educational resources.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm about-feature-card p-2">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper mb-4 rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background: rgba(243, 113, 249, 0.1); color: #F371F9;">
+                            <i class="fas fa-cogs fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3 text-dark">How We Do It</h4>
+                        <p class="text-muted mb-0">Our platform utilizes a robust ML model trained on a vast dataset of symptoms and diseases. By inputting your symptoms, our system generates accurate predictions, allowing you to make informed decisions.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="about-card" style="border-left-color: #F39334;">
-            <h3 class="card-title" style="color: #F39334;"><i class="fas fa-bullseye" style="background: rgba(243, 147, 52, 0.1);"></i> Our Mission</h3>
-            <p>At Predict_Rx, our mission is to provide you with a seamless and intuitive platform that leverages the power of artificial intelligence and machine learning. We want to assist you in identifying potential health concerns based on your reported symptoms, all while offering a wealth of educational resources to enhance your health literacy.</p>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="about-card" style="border-left-color: #F371F9;">
-                    <h3 class="card-title" style="color: #F371F9;"><i class="fas fa-cogs" style="background: rgba(243, 113, 249, 0.1);"></i> How We Do It</h3>
-                    <p>Our platform utilizes a robust machine learning model trained on a vast dataset of symptoms and diseases. By inputting your symptoms, our system generates accurate predictions about potential illnesses, allowing you to make informed decisions about your health.</p>
+        <!-- CTA Banner -->
+        <div class="mt-5 p-5 cta-banner text-white shadow-lg">
+            <div class="row align-items-center position-relative" style="z-index: 2;">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-3">Your Well-being, Our Priority</h2>
+                    <p class="mb-0 fs-5 opacity-75">We go the extra mile to provide not only accurate predictions but comprehensive information—including descriptions, precautions, medications, and dietary advice.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="/" class="btn btn-light-custom btn-lg fw-bold px-5 py-3 rounded-pill">
+                        <i class="fas fa-stethoscope me-2"></i> Try Predict_Rx Now
+                    </a>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="about-card" style="border-left-color: #99F741;">
-                    <h3 class="card-title" style="color: #5cb85c;"><i class="fas fa-heartbeat" style="background: rgba(153, 247, 65, 0.1);"></i> Your Well-being</h3>
-                    <p>Your health is our top priority. We understand that navigating the complexities of healthcare can be daunting. That's why we've gone the extra mile to provide not only accurate predictions but also comprehensive information about each disease. You'll find descriptions, recommended precautions, medications, dietary advice, and workout tips to support your journey to better health.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center my-5">
-            <h3>Join Us on this Journey</h3>
-            <p class="lead text-muted">We invite you to explore our platform, engage with our educational content, and take control of your health journey.</p>
-            <p>Thank you for choosing Predict_Rx as your trusted health companion.</p>
         </div>
 
     </div>

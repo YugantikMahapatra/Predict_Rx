@@ -11,6 +11,143 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #0061f2 0%, #00c6f9 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            margin-bottom: 60px;
+            border-radius: 0 0 50px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::after {
+            content: '\f0e0';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: -20px;
+            top: -20px;
+            font-size: 250px;
+            color: rgba(255,255,255,0.05);
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-text {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            text-align: center;
+            height: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid #f8f9fa;
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 97, 242, 0.1);
+            border-color: #e9f7fe;
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 25px auto;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info-card:hover .icon-circle {
+            transform: scale(1.1);
+        }
+
+        .bg-blue-light { background: rgba(0, 97, 242, 0.1); color: #0061f2; }
+        .bg-green-light { background: rgba(42, 157, 143, 0.1); color: #2a9d8f; }
+        .bg-orange-light { background: rgba(244, 162, 97, 0.1); color: #f4a261; }
+
+        .form-wrapper {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            border: 1px solid #eee;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 2px solid #f0f2f5;
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: #00c6f9;
+            box-shadow: 0 0 0 4px rgba(0, 198, 249, 0.1);
+        }
+
+        .btn-send {
+            background: linear-gradient(135deg, #0061f2 0%, #00c6f9 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 97, 242, 0.3);
+        }
+
+        .social-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #555;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-circle:hover {
+            background: #0061f2;
+            color: white;
+            transform: translateY(-3px);
+        }
+    </style>
   </head>
   <body>
     <!-- Navbar -->
@@ -64,72 +201,87 @@
 
     <!-- Hero Section -->
     <div class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">Contact Us</h1>
-            <p class="hero-text">Have questions or need assistance? We're here to help!</p>
+        <div class="container position-relative" style="z-index: 2;">
+            <h1 class="hero-title">Get in Touch</h1>
+            <p class="hero-text">Have questions about our AI models or need technical support? Our team is here to help you navigate your health journey.</p>
         </div>
     </div>
 
-    <div class="container">
-        <div class="row mb-5">
+    <div class="container mb-5">
+        <!-- Info Cards -->
+        <div class="row g-4 mb-5">
             <div class="col-md-4">
-                <div class="contact-card">
-                    <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                    <h4 class="contact-title">Email Us</h4>
-                    <p class="text-muted">For general inquiries and support</p>
-                    <p class="fw-bold">abc@gmail.com</p>
+                <div class="contact-info-card">
+                    <div class="icon-circle bg-blue-light"><i class="fas fa-envelope"></i></div>
+                    <h4 class="fw-bold mb-2 text-dark">Email Us</h4>
+                    <p class="text-muted mb-3">Drop us a line anytime</p>
+                    <a href="mailto:abc@gmail.com" class="fw-bold text-decoration-none" style="color: #0061f2; font-size: 1.1rem;">abc@gmail.com</a>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="contact-card">
-                    <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                    <h4 class="contact-title">Call Us</h4>
-                    <p class="text-muted">Mon-Fri from 9am to 5pm</p>
-                    <p class="fw-bold">xxxxxxxxxx</p>
+                <div class="contact-info-card">
+                    <div class="icon-circle bg-green-light"><i class="fas fa-phone-alt"></i></div>
+                    <h4 class="fw-bold mb-2 text-dark">Call Us</h4>
+                    <p class="text-muted mb-3">Mon-Fri, 9am to 6pm</p>
+                    <a href="tel:xxxxxxxxxx" class="fw-bold text-decoration-none" style="color: #2a9d8f; font-size: 1.1rem;">xxxxxxxxxx</a>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="contact-card">
-                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                    <h4 class="contact-title">Visit Us</h4>
-                    <p class="text-muted">Come say hello at our office</p>
-                    <p class="fw-bold">Location to be updated</p>
+                <div class="contact-info-card">
+                    <div class="icon-circle bg-orange-light"><i class="fas fa-map-marker-alt"></i></div>
+                    <h4 class="fw-bold mb-2 text-dark">Visit Us</h4>
+                    <p class="text-muted mb-3">Our headquarters</p>
+                    <p class="fw-bold mb-0" style="color: #f4a261; font-size: 1.1rem;">Location to be updated</p>
                 </div>
             </div>
         </div>
 
+        <!-- Form Section -->
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="contact-card text-start">
-                    <h3 class="mb-4 text-center">Send us a Message</h3>
+            <div class="col-lg-10">
+                <div class="form-wrapper">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold text-dark">Send us a Message</h2>
+                        <p class="text-muted">Fill out the form below and our support team will get back to you within 24 hours.</p>
+                    </div>
+
                     <form>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="John Doe">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="email" placeholder="name@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" rows="5" placeholder="How can we help you?"></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-send">Send Message</button>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label fw-bold text-secondary ps-1">Your Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="e.g. John Doe">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-bold text-secondary ps-1">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="john@example.com">
+                            </div>
+                            <div class="col-12">
+                                <label for="subject" class="form-label fw-bold text-secondary ps-1">Subject</label>
+                                <input type="text" class="form-control" id="subject" placeholder="How can we help?">
+                            </div>
+                            <div class="col-12">
+                                <label for="message" class="form-label fw-bold text-secondary ps-1">Message</label>
+                                <textarea class="form-control" id="message" rows="6" placeholder="Write your message here..."></textarea>
+                            </div>
+                            <div class="col-12 text-center mt-5">
+                                <button type="submit" class="btn btn-send">
+                                    <i class="fas fa-paper-plane me-2"></i> Send Message
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <div class="text-center mt-5">
-            <h4>Stay Connected</h4>
-            <p class="text-muted">Follow us on social media for the latest updates</p>
-            <div class="fs-2">
-                <a href="#" class="text-primary me-3"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="text-info me-3"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-danger"><i class="fab fa-instagram"></i></a>
+        <!-- Social Section -->
+        <div class="text-center mt-5 pt-4">
+            <h4 class="fw-bold text-dark mb-3">Connect With Us</h4>
+            <div class="d-flex justify-content-center">
+                <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
 
