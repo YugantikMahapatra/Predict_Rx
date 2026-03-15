@@ -9,160 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --accent-color: #00c6f9;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            background: linear-gradient(90deg, #0061f2 0%, #00c6f9 100%);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            padding: 15px 0;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            letter-spacing: 0.5px;
-        }
-
-        .logo .myimg {
-            width: 45px;
-            height: 45px;
-            border: 2px solid rgba(255,255,255,0.8);
-            border-radius: 50%;
-            margin-right: 10px;
-            object-fit: cover;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            margin: 0 10px;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: white;
-            transition: width 0.3s;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, #0061f2 0%, #00c6f9 100%);
-            color: white;
-            padding: 80px 0;
-            text-align: center;
-            margin-bottom: 50px;
-            border-radius: 0 0 50px 50px;
-        }
-
-        .hero-title {
-            font-weight: 800;
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .hero-text {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Contact Cards */
-        .contact-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            transition: transform 0.3s;
-            text-align: center;
-            height: 100%;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .contact-icon {
-            font-size: 3rem;
-            color: #0061f2;
-            margin-bottom: 20px;
-            background: rgba(0, 97, 242, 0.1);
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .contact-title {
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        /* Form */
-        .form-control {
-            border-radius: 10px;
-            padding: 12px;
-            border: 1px solid #eef2f6;
-            background-color: #fcfcfc;
-        }
-
-        .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(0, 198, 249, 0.15);
-            border-color: #00c6f9;
-        }
-
-        .btn-send {
-            background: linear-gradient(135deg, #0061f2 0%, #00c6f9 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 12px 30px;
-            font-weight: 600;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .btn-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 97, 242, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background: #333;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            margin-top: 50px;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
     <!-- Navbar -->
@@ -187,6 +35,28 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/contact">Contact</a>
                     </li>
+                    <!-- Auth Links -->
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.role == 'doctor' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('doctor_dashboard') }}">Dashboard</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('my_history') }}">My History</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link text-warning fw-bold" href="{{ url_for('logout') }}">Logout ({{ current_user.username }})</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold" href="{{ url_for('register') }}">Register</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
