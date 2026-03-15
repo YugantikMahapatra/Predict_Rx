@@ -199,12 +199,12 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 40px;
 }
 
 .toggle-button {
-    padding: 15px 30px;
+    padding: 15px 20px;
     font-size: 16px;
     font-weight: 600;
     border: none;
@@ -216,7 +216,8 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    min-width: 160px;
+    flex: 1 1 calc(33.333% - 15px);
+    min-width: 140px;
     justify-content: center;
 }
 
@@ -229,6 +230,18 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
+@media (max-width: 768px) {
+    .toggle-button {
+        flex: 1 1 calc(50% - 15px);
+    }
+}
+
+@media (max-width: 480px) {
+    .toggle-button {
+        flex: 1 1 100%;
+    }
+}
+
 /* Content Cards */
 .content-section {
     display: none;
@@ -238,7 +251,7 @@ body {
     box-shadow: 0 15px 35px rgba(0,0,0,0.08);
     margin-top: 20px;
     border: 1px solid #f0f0f0;
-    animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     position: relative;
     overflow: hidden;
 }
@@ -258,8 +271,8 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(30px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .section-title {
@@ -302,52 +315,65 @@ body {
     color: #0061f2;
 }
 
-/* Specific Colors for Sections */
+/* Specific Colors for Sections - Cohesive Medical Palette */
 /* Disease */
-.btn-disease { background: linear-gradient(135deg, #F39334 0%, #F57F17 100%); }
-#disease.content-section::before { background: #F39334; }
-#disease .section-title { color: #F39334; }
+.btn-disease { background: linear-gradient(135deg, #ef233c 0%, #d90429 100%); }
+#disease.content-section::before { background: #d90429; }
+#disease .section-title { color: #d90429; }
 
 /* Description */
-.btn-desc { background: linear-gradient(135deg, #268AF3 0%, #1E88E5 100%); }
-#description.content-section::before { background: #268AF3; }
-#description .section-title { color: #268AF3; }
+.btn-desc { background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%); }
+#description.content-section::before { background: #023e8a; }
+#description .section-title { color: #023e8a; }
 
 /* Precaution */
-.btn-precaution { background: linear-gradient(135deg, #F371F9 0%, #E040FB 100%); }
-#precaution.content-section::before { background: #F371F9; }
-#precaution .section-title { color: #F371F9; }
-#precaution li { border-left-color: #F371F9; }
-#precaution li::before { color: #F371F9; }
+.btn-precaution { background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%); }
+#precaution.content-section::before { background: #0077b6; }
+#precaution .section-title { color: #0077b6; }
+#precaution li { border-left-color: #0077b6; }
+#precaution li::before { color: #0077b6; }
 
 /* Medications */
-.btn-med { background: linear-gradient(135deg, #F8576F 0%, #E91E63 100%); }
-#medications.content-section::before { background: #F8576F; }
-#medications .section-title { color: #F8576F; }
-#medications li { border-left-color: #F8576F; }
-#medications li::before { color: #F8576F; content: '\f484'; } /* Pill icon */
+.btn-med { background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%); }
+#medications.content-section::before { background: #0096c7; }
+#medications .section-title { color: #0096c7; }
+#medications li { border-left-color: #0096c7; }
+#medications li::before { color: #0096c7; content: '\f484'; }
 
 /* Workouts */
-.btn-workout { background: linear-gradient(135deg, #99F741 0%, #76FF03 100%); color: #333; }
-#workouts.content-section::before { background: #99F741; }
-#workouts .section-title { color: #5cb85c; }
-#workouts li { border-left-color: #99F741; }
-#workouts li::before { color: #76FF03; content: '\f44b'; } /* Dumbbell icon */
+.btn-workout { background: linear-gradient(135deg, #2a9d8f 0%, #264653 100%); color: white; }
+#workouts.content-section::before { background: #2a9d8f; }
+#workouts .section-title { color: #2a9d8f; }
+#workouts li { border-left-color: #2a9d8f; }
+#workouts li::before { color: #2a9d8f; content: '\f44b'; }
 
 /* Diets */
-.btn-diet { background: linear-gradient(135deg, #E5E23D 0%, #FFD600 100%); color: #333; }
-#diets.content-section::before { background: #E5E23D; }
-#diets .section-title { color: #FBC02D; }
-#diets li { border-left-color: #E5E23D; }
-#diets li::before { color: #FFD600; content: '\f2e7'; } /* Utensils icon */
+.btn-diet { background: linear-gradient(135deg, #e9c46a 0%, #f4a261 100%); color: white; }
+#diets.content-section::before { background: #f4a261; }
+#diets .section-title { color: #f4a261; }
+#diets li { border-left-color: #f4a261; }
+#diets li::before { color: #f4a261; content: '\f2e7'; }
 
-/* Footer */
-footer {
-    background: #333;
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    margin-top: 50px;
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    min-width: 300px;
+}
+
+.toast-alert {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border: none;
+    border-radius: 12px;
+    animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    padding: 15px 20px;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
 /* Loading Spinner */
@@ -400,7 +426,7 @@ footer {
 }
 
 @media print {
-    .navbar, .form-container, .result-container, .btn-print, footer {
+    .navbar, .form-container, .result-container, .btn-print {
         display: none !important;
     }
 
