@@ -8,7 +8,7 @@ function PatientHistory() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/patient/history');
+        const response = await axios.get('https://predict-rx.onrender.com/api/patient/history');
         setHistory(response.data.history);
       } catch (err) {
         setError('Failed to load history');

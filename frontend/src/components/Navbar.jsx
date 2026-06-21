@@ -11,7 +11,7 @@ function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/auth/logout');
+      await axios.post('https://predict-rx.onrender.com/api/auth/logout');
       localStorage.removeItem('user');
       navigate('/login');
     } catch (error) {

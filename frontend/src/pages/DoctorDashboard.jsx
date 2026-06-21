@@ -13,7 +13,7 @@ function DoctorDashboard() {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/doctor/dashboard');
+      const response = await axios.get('https://predict-rx.onrender.com/api/doctor/dashboard');
       setPending(response.data.pending);
       setApproved(response.data.approved);
       setError('');
@@ -42,7 +42,7 @@ function DoctorDashboard() {
     }
     
     try {
-      await axios.post(`http://localhost:5000/api/doctor/approve/${consultationId}`, {
+      await axios.post(`https://predict-rx.onrender.com/api/doctor/approve/${consultationId}`, {
         approved_medications: meds
       });
       fetchDashboard(); // Refresh lists

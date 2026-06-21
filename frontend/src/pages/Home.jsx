@@ -19,8 +19,8 @@ function Home() {
     const fetchData = async () => {
       try {
         const [symptomsRes, doctorsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/patient/symptoms'),
-          axios.get('http://localhost:5000/api/patient/doctors')
+          axios.get('https://predict-rx.onrender.com/api/patient/symptoms'),
+          axios.get('https://predict-rx.onrender.com/api/patient/doctors')
         ]);
         setSymptomsList(symptomsRes.data.symptoms);
         setDoctors(doctorsRes.data.doctors);
@@ -47,7 +47,7 @@ function Home() {
     const symptomsArray = selectedSymptoms.split(',').map(s => s.trim()).filter(s => s !== '');
     
     try {
-      const response = await axios.post('http://localhost:5000/api/patient/predict', {
+      const response = await axios.post('https://predict-rx.onrender.com/api/patient/predict', {
         symptoms: symptomsArray
       });
       setPrediction(response.data);
@@ -70,7 +70,7 @@ function Home() {
 
     try {
       const symptomsArray = selectedSymptoms.split(',').map(s => s.trim()).filter(s => s !== '');
-      await axios.post('http://localhost:5000/api/patient/submit', {
+      await axios.post('https://predict-rx.onrender.com/api/patient/submit', {
         symptoms: symptomsArray.join(', '),
         predicted_disease: prediction.disease,
         ai_medications: prediction.pending_medications.join(', '),

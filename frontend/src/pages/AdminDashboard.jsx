@@ -12,9 +12,9 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const [statsRes, usersRes, consultsRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/admin/stats'),
-        axios.get('http://localhost:5000/api/admin/users'),
-        axios.get('http://localhost:5000/api/admin/consultations')
+        axios.get('https://predict-rx.onrender.com/api/admin/stats'),
+        axios.get('https://predict-rx.onrender.com/api/admin/users'),
+        axios.get('https://predict-rx.onrender.com/api/admin/consultations')
       ]);
       setStats(statsRes.data);
       setUsers(usersRes.data.users);
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
 
   const handleVerify = async (userId) => {
     try {
-      await axios.post(`http://localhost:5000/api/admin/user/${userId}/verify`);
+      await axios.post(`https://predict-rx.onrender.com/api/admin/user/${userId}/verify`);
       fetchDashboardData(); // Refresh data
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to verify user');
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
 
   const handleBan = async (userId) => {
     try {
-      await axios.post(`http://localhost:5000/api/admin/user/${userId}/ban`);
+      await axios.post(`https://predict-rx.onrender.com/api/admin/user/${userId}/ban`);
       fetchDashboardData(); // Refresh data
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to ban user');
@@ -54,7 +54,7 @@ const AdminDashboard = () => {
   };
 
   const handleExport = () => {
-    window.location.href = 'http://localhost:5000/api/admin/export';
+    window.location.href = 'https://predict-rx.onrender.com/api/admin/export';
   };
 
   if (loading) return <div className="app-container text-center mt-5"><h4>Loading Dashboard...</h4></div>;
