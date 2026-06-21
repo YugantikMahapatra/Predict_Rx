@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
@@ -29,9 +30,10 @@ class User(UserMixin, db.Model):
         }
 
 class Consultation(db.Model):
+    __tablename__ = 'consultations'
     id = db.Column(db.Integer, primary_key=True)
-    patient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    assigned_doctor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    assigned_doctor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     symptoms = db.Column(db.String(500), nullable=False)
     predicted_disease = db.Column(db.String(150), nullable=False)
     ai_medications = db.Column(db.Text, nullable=False) # Stored as comma separated string
