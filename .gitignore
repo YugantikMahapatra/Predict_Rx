@@ -1,27 +1,19 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
+# Environment Variables
+.env
+.env.local
 
-# Virtual Environment
-venv/
-.venv/
-env/
+# Backend (Python)
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/instance/
+backend/clinic.db
 
-# IDE Settings
-.idea/
-.vscode/
-*.swp
-*.swo
+# Frontend (Node.js)
+frontend/node_modules/
+frontend/dist/
+frontend/.eslintcache
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# OS generated files
+# OS Files
 .DS_Store
 Thumbs.db
-
-# Local Database
-*.db
-instance/
- clinic.db

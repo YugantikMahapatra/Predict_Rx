@@ -1,108 +1,66 @@
-# Predict_Rx - AI-Powered Medical Diagnostic Platform
+# PredictRx: AI-Assisted Healthcare Triage Platform
 
-A full-stack web application that uses Machine Learning to predict diseases from symptoms, featuring a "Doctor-in-the-loop" system for medication approval.
+PredictRx is a modern, enterprise-grade healthcare application that utilizes Machine Learning to provide preliminary diagnoses based on patient symptoms. To ensure medical safety and compliance, the application employs a strict Role-Based Access Control (RBAC) system where AI predictions must be manually reviewed and approved by verified human doctors.
 
-**Live Demo:** https://predict-rx.onrender.com
+## 🌟 Core Architecture
 
----
+The platform is split into two robust services:
+1. **Frontend:** A responsive, glassmorphism-styled React.js application powered by Vite.
+2. **Backend:** A RESTful Flask API that handles authentication, database management (SQLAlchemy), and Machine Learning inference (Scikit-Learn).
 
-## 1. Project Overview
+## 👥 Role-Based Access Control (RBAC)
 
-Predict_Rx is a web-based healthcare application designed to provide accessible, preliminary medical diagnoses. At its core, the platform utilizes a **Support Vector Classifier (SVC)** Machine Learning model to predict potential diseases based on user-reported symptoms. 
+PredictRx features a 3-tier security architecture to ensure medical safety:
 
-The application implements a secure, dual-role authentication system for Patients and Doctors. It ensures medical safety by requiring a registered doctor to review and approve any AI-suggested medications before they are revealed to the patient, creating a "Human-in-the-Loop" safety architecture.
+### 1. Patients
+- **Registration:** Anyone can register as a patient.
+- **Workflow:** Patients select their symptoms from a searchable interface. The AI model instantly provides a preliminary diagnosis, recommended diet, and suggested medications.
+- **Human Review:** Before the medications are "prescribed", the patient can add contextual notes. The consultation is then submitted to the global queue for doctor approval.
+- **History:** Patients have a dedicated dashboard to view past consultations and see if their pending cases have been approved by a doctor.
 
-## 2. Key Features
+### 2. Doctors
+- **Registration & Verification:** Users can register as a Doctor, but they are placed in a **Pending Verification** lock-state. They cannot access patient data until an Admin verifies their medical credentials.
+- **Dashboard:** Verified doctors have access to the global queue of pending consultations.
+- **Approval Workflow:** Doctors review the patient's symptoms, the patient's custom notes, and the AI's preliminary diagnosis. The doctor can then edit, overwrite, or approve the final list of medications.
 
-- **AI-Powered Disease Prediction:** Uses an SVC model to predict one of 41 diseases from 132 symptoms.
-- **Dual-Role User System:** Separate login and dashboard experiences for Patients and Doctors.
-- **Doctor Approval Workflow:** AI-suggested medications are locked until a doctor reviews and approves them.
-- **Patient Consultation History:** Patients can view their past predictions and check the approval status of their medications.
-- **Speech-to-Text Symptom Input:** Integrates the Web Speech API for hands-free symptom entry.
-- **Smart Autocomplete:** A custom JavaScript feature suggests valid symptoms to prevent input errors.
-- **Printable Medical Reports:** Generates a clean, printer-friendly report of the final diagnosis and approved medications.
-- **Modern UI/UX:** Features a responsive design, smooth animations, and toast notifications for a professional user experience.
+### 3. Administrators
+- **Global Oversight:** Admins have access to a secure dashboard showing platform analytics (Total Patients, Doctors, and Pending Cases).
+- **User Management:** Admins can verify pending doctor accounts or instantly ban malicious users.
+- **Auditing:** Admins can view a live feed of all global consultations.
+- **Data Export:** Admins can export the entire consultation history to a CSV file for legal auditing or HIPAA compliance tracking.
 
----
+## 🚀 Key Technical Features
 
-## 3. Technology Stack
+* **Machine Learning Integration:** Uses a trained Support Vector Classifier (SVC) pickled model to predict diseases based on a massive matrix of potential symptoms.
+* **Modern UI/UX:** Built with React, featuring a custom premium CSS design system (glassmorphism cards, dynamic gradients, Outfit typography).
+* **RESTful Architecture:** Clear separation of concerns. The Flask backend acts purely as a JSON API, making it perfectly suited for future deployment on Render, AWS, or Vercel.
+* **Secure Authentication:** Cookie/Session-based authentication using Flask-Login and Werkzeug password hashing.
 
-| Category      | Technology                                       | Purpose                                                 |
-|---------------|--------------------------------------------------|---------------------------------------------------------|
-| **Backend**       | Python, Flask                                    | Core application logic, routing, and server management. |
-| **Frontend**      | HTML, CSS, JavaScript, Bootstrap 5               | User interface, styling, and client-side interactions.  |
-| **Database**      | PostgreSQL (Production), SQLite (Local)          | Storing user and consultation data.                     |
-| **DB Hosting**    | Neon.tech                                        | Free, serverless PostgreSQL provider for production.    |
-| **ORM**           | Flask-SQLAlchemy                                 | Interacting with the database using Python objects.     |
-| **Authentication**| Flask-Login, Werkzeug Security                   | Managing user sessions and hashing passwords securely.  |
-| **ML Library**    | Scikit-learn, Pandas, NumPy                      | Training the model and processing data.                 |
-| **Deployment**    | Render, Gunicorn                                 | Hosting the application and serving it in production.   |
+## 🛠️ Local Development Setup
 
----
-
-## 4. Local Setup & Installation
-
-Follow these steps to run the project on your local machine.
-
-### Prerequisites
-- Python 3.x installed
-- Git installed
-
-### Step-by-Step Guide
-
-**1. Clone the Repository**
-Open your terminal or command prompt and run:
-```sh
-git clone https://github.com/YugantikMahapatra/Predict_Rx.git
-cd Predict_Rx
-```
-
-
-**2. Create a Virtual Environment**
-It's best practice to create a virtual environment to manage project dependencies.
-```sh
-# For Windows
+### 1. Backend Setup
+```bash
+cd backend
 python -m venv venv
-
-# For macOS/Linux
-python3 -m venv venv
-```
-
-**3. Activate the Virtual Environment**
-```sh
-# For Windows
-venv\Scripts\activate
-
-# For macOS/Linux
-source venv/bin/activate
-```
-You will see `(venv)` at the beginning of your terminal prompt.
-
-**4. Install Required Packages**
-Install all the necessary libraries from the `requirements.txt` file.
-```sh
+venv\Scripts\activate  # Windows
 pip install -r requirements.txt
+python run.py
 ```
-> **Note:** If you see an error related to `gunicorn` on Windows, you can ignore it. Gunicorn is only used for deployment on Linux-based servers like Render.
+*The backend runs on `http://localhost:5000`.*
+*Note: On the very first run, the SQLite database is generated automatically, and a default admin account is seeded (`admin` / `admin123`).*
 
-**5. Run the Application**
-Start the Flask development server.
-```sh
-python main.py
+### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
 ```
-The application will create a local `clinic.db` file for your database and automatically create a default doctor account.
+*The frontend runs on `http://localhost:5173`.*
 
-**6. Access the Application**
-Open your web browser and navigate to:
-[http://127.0.0.1:5000](http://127.0.0.1:5000)
+## 🚢 Deployment Roadmap (Render + PostgreSQL)
 
----
-
-## 5. Default Login Credentials
-
-A default doctor account is created automatically when you first run the app. Use these credentials to access the Doctor Dashboard.
-
-- **Username:** `doctor_admin`
-- **Password:** `doctor123`
-
-You can register new patient accounts through the website's registration page.
+To move this application from localhost to a live production environment:
+1. **Database:** Swap the local SQLite `clinic.db` for a cloud PostgreSQL provider like **Neon** or **Supabase**. Update the `.env` `DATABASE_URL`.
+2. **Backend:** Deploy the `backend` folder as a "Web Service" on Render.
+3. **Frontend:** Update `axios` base URLs in React to point to the live Render backend URL, then deploy the `frontend` folder as a "Static Site" on Render.
+4. **Cron Job:** Set up a free ping service (like cron-job.org) to hit the backend every 14 minutes to prevent Render's free tier from sleeping.
