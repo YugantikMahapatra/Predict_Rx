@@ -42,6 +42,11 @@ def create_app():
             db.session.commit()
             print("Seeded default admin user: admin / admin123")
 
+    # Health check route for Render cron jobs
+    @app.route('/')
+    def health_check():
+        return "Backend is awake!", 200
+
     # Import and Register Blueprints (Routes)
     # We will create these next!
     from .routes.auth_api import auth_bp
