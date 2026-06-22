@@ -48,7 +48,6 @@ function Navbar() {
                 </>
               ) : (
                 <>
-                  <li><Link to="/" className="nav-links">Home</Link></li>
                   <li><Link to="/history" className="nav-links">My History</Link></li>
                   <li><button onClick={handleLogout} className="btn-logout">Logout ({user.username})</button></li>
                 </>
