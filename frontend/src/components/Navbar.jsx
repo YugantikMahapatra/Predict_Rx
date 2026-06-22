@@ -12,10 +12,11 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       await axios.post('https://predict-rx.onrender.com/api/auth/logout');
+    } catch (err) {
+      console.error("Failed to logout on backend", err);
+    } finally {
       localStorage.removeItem('user');
-      navigate('/login');
-    } catch (error) {
-      console.error("Logout failed", error);
+      window.location.href = '/login';
     }
   };
 

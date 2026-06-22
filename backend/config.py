@@ -17,3 +17,10 @@ class Config:
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
         
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Production Cookie Settings (Required for cross-domain requests on Render)
+    SESSION_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SECURE = True
+    # Flask-Login cookie settings
+    REMEMBER_COOKIE_SAMESITE = 'None'
+    REMEMBER_COOKIE_SECURE = True
